@@ -1,0 +1,260 @@
+<!DOCTYPE HTML>
+<!--
+	Template: Future Imperfect by HTML5 UP
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>ATLAS</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../assets/css/main.css" />
+	</head>
+	<body class="single is-preload">
+
+            <pre class="prettyprint">
+import pandas as pd
+import sklearn.datasets
+from sklearn.model_selection import train_test_split
+import sklearn.metrics as mtc
+import numpy as np
+from scipy.special import xlogy
+import statsmodels.stats.api as sms
+
+
+class LogisticRegression():
+    """   
+    This class implements the Logistic Regression model.
+    Multiclass is handled by the One-versus-Rest (OvR) approach.
+
+    :param momentum: range [0,1], used for accelerating the SGD.
+    :param a: the learning rate alpha.
+    :param max_epoch: number of iterations for the learning algorithm.
+    :param t: the bias of the model.
+    :param nomalize: whether to apply normalization.
+    :param w: the weights array.
+    :param Error: The list of errors for each epoch.
+    :param targets: the target labels set for OvR.
+    :param ovr_t: the biases for each class (OvR).
+    :param ovr_w: the weights array for each class (OvR). 
+    """
+    def __init__(self, momentum=None, a=0.01, max_epoch=None, t=np.random.normal(), \
+        normalize=True, random_seed=np.random.randint(0,9999999)):
+
+        self.momentum = momentum
+        self.a = a
+        self.max_epoch = max_epoch
+        # seed used to get predictable result
+        self.rand_seed = random_seed
+        np.random.seed(self.rand_seed)
+        self.t = np.random.normal()
+        self.normalize = normalize
+        self.w = None
+        self.Error = []
+        self.targets = None
+        self.ovr_t = None
+        self.ovr_w = None
+
+    def normalizeFeatures(self, df):
+        """
+        Normalizes the features based on the mean and standard deviation.
+
+        :param df: the panda dataframe of the features
+        :returns: the normalized panda dataframe
+        """
+        for c in df:
+            # for each feature calculate mean and std deviation
+            col = df[c]
+            m = np.mean(col)
+            std = np.std(col)
+            # subtract mean from each example #divide result by std deviation
+            # df[c] = [(v - m)/ std for v in col]
+            df[c] = [np.divide(v - m, std) if std !=0 else 0 for v in col]
+        return df
+
+    def f(self, w,x,t):
+        """
+        The discriminant function.
+
+        :param w: the current weights array
+        :param x: the example's feature array
+        :param t: the current bias
+        :returns: the probability that x is class 1. 
+        """
+        return 1.0/(1.0 + np.power(np.e, -(w.dot(x) - t) ))
+
+    def predict(self, test_x):
+        """
+        Predict the class for the test examples in the binary case.
+
+        :param test_x: the test examples to predict
+        :returns: Array with the predicted class labels.
+        """
+        test_x = self.normalizeFeatures(pd.DataFrame(test_x)).values if self.normalize else test_x
+        y_pred = []
+        for x in test_x:
+            predicted = 1 if self.f(self.w, x, self.t) > 0.5 else 0
+            y_pred.append(predicted)
+        return np.array(y_pred)
+
+    def loss(self, y, f_res):
+        """
+        Calculates the cross-entropy loss
+        
+        :param y: the actual label of the class
+        :param f_res: the result of the discriminant function
+        :returns: the cross-entropy loss
+        """
+        # return -(y*np.log(f_res) + (1.0-y) * np.log(1.0-f_res))
+        return -(xlogy(y, f_res) + xlogy(1 - y, 1 - f_res)) # uses scipy log function
+
+
+    def fit(self, train_x, train_y):
+        """
+        Learning algorithm for Logistic Regression with momentum parameter, if enabled.
+        
+        :param train_X: array of training examples
+        :param train_y: the target vector (binary)
+        :returns: the calculated weights and bias
+        """
+        self.Error = [] # reset the list of error for each epoch
+        numExample = len(train_x)
+        numFeature = len(train_x[0])
+        maxEpoch = 5 * numFeature if self.max_epoch == None else self.max_epoch
+
+        # seed used to get predictable result
+        np.random.seed(self.rand_seed)
+        w = np.random.rand(numFeature)
+
+        delta_w, delta_t = np.zeros(len(w)), 0.0
+        train_x = self.normalizeFeatures(pd.DataFrame(train_x)).values if self.normalize else train_x
+        for e in range(maxEpoch):
+            error = 0.0
+            for x,y in zip(train_x, train_y):
+                for j in range(len(w)):
+                    grad_w = - self.a*(self.f(w,x, self.t) - y) * x[j]
+                    if self.momentum != None:       # w with Momentum
+                        delta_w[j] = self.momentum*delta_w[j] + grad_w
+                        w[j] = w[j] + delta_w[j]
+                    else:                           # w without Momentum
+                        w[j] = w[j] + grad_w
+                # end for
+                grad_t = self.a * (self.f(w,x, self.t) - y)
+                if self.momentum != None:           # t with Momentum
+                    delta_t = self.momentum*delta_t + grad_t
+                    self.t = self.t + delta_t
+                else:                               # t without Momentum
+                    self.t = self.t + grad_t                  
+                error += self.loss(y, self.f(w,x, self.t))
+            # end for
+            self.w = w            
+            # print("Epoch", e, "error:",error)
+            self.Error.append(error)
+        # end for
+        # self.w = w
+        return w, self.t
+
+
+    def ovr_transform_targets(self, train_y, hot):
+        """
+        Transforms the multicalss target vector into a binary one. 
+
+        :param train_y: the multiclass target vector
+        :param hot: the targeted class label, from 0 to n
+        :returns: A new Target vector where only the hot target value is equal to 1. 
+        """
+        hot_y = []
+        for y in train_y:
+            hot_y.append(1 if y == hot else 0)
+        return hot_y
+
+
+    def ovr_fit(self, train_x, train_y):
+        """
+        Learning algorithm in case for multiclass problems.
+        One-verus-Rest approach, trains once for every class.
+
+        :param train_X: array of training examples
+        :param train_y: the multiclass target vector
+        """
+        self.targets = set(train_y)
+        numExample = len(train_x)
+        numFeature = len(train_x[0])
+
+        w = np.random.rand(max(self.targets) + 1, numFeature)
+        t = np.random.rand(max(self.targets) + 1)
+
+        for i in self.targets:
+            hot_train_y = self.ovr_transform_targets(train_y, i) 
+            w[i], t[i] = self.fit(train_x, hot_train_y)
+
+        self.ovr_w = w
+        self.ovr_t = t
+
+
+    def ovr_predict(self, test_x):
+        """
+        Predict the multiclass labels for the test examples.    
+
+        :param test_x: the test examples to predict
+        :returns: Array with the predicted class labels.
+        """
+        test_x = self.normalizeFeatures(pd.DataFrame(test_x)).values if self.normalize else test_x
+        y_pred = []
+        for x in test_x:
+            max_target, max_value = 0, -1.0
+            for i in self.targets:
+                f = self.f(self.ovr_w[i], x, self.ovr_t[i])
+
+                if f > max_value:
+                    max_value = f
+                    max_target = i
+            y_pred.append(max_target)
+        return y_pred
+
+
+    def predict_proba(self, test_x):
+        """
+        Get the probrabity for all test datapoints.
+
+        :param test_x: the test examples to predict
+        :returns: numpy array with the probability for both classes.
+        """
+        test_x = self.normalizeFeatures(pd.DataFrame(test_x)).values if self.normalize else test_x
+        probs = []
+        for x in test_x:
+            f = self.f(self.w, x, self.t)
+            probs.append((1-f,f))
+        return np.array(probs)
+
+
+    def get_mean_perf(self, train_x, train_y):
+        y_pred_temp = self.predict(train_x)
+        acc = mtc.accuracy_score(train_y, y_pred_temp)
+        return 1-acc
+
+
+    def ovr_predict_proba(self, test_x):
+        """
+        Get the probrabity for all test datapoints.
+
+        :param test_x: the test examples to predict
+        :returns: numpy array with the probability for all classes.
+        """
+        test_x = self.normalizeFeatures(pd.DataFrame(test_x)).values if self.normalize else test_x
+        probs = []
+        for x in test_x:
+            prob_line = []
+            for i in self.targets:
+                f = self.f(self.ovr_w[i], x, self.ovr_t[i])
+                prob_line.append(f)
+            probs.append(prob_line)
+        return np.array(probs)
+                                                            </pre>
+
+		<!-- Scripts -->
+            <!-- code snippets -->
+            <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+	</body>
+</html>
