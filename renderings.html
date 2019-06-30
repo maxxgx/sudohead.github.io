@@ -1,15 +1,51 @@
 <!DOCTYPE HTML>
 <!--
 	Template: Future Imperfect by HTML5 UP
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
 	<head>
-		<title>Rendering</title>
+		<title>Portfolio</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/main_page.css" />
+
+		<style>				
+				div.gallery:hover {
+				  border: 1px solid #777;
+				}
+				
+				div.gallery img {
+				  width: 100%;
+				  height: auto;
+				}
+				
+				
+				.responsive {
+				  float: left;
+				  width: 24.99999%;
+				}
+				
+				@media only screen and (max-width: 700px) {
+				  .responsive {
+					width: 49.99999%;
+				  }
+				}
+				
+				@media only screen and (max-width: 500px) {
+				  .responsive {
+					width: 100%;
+				  }
+				}
+				
+				.clearfix:after {
+				  content: "";
+				  display: table;
+				  clear: both;
+				}
+				</style>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload" >
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -40,54 +76,69 @@
 						<!-- Links -->
 							<section>
 								<ul class="links">
-                                    <li><a href="index.html"><h3>Projects</h3></a></li>
-                                    <li><a href="renderings.html"><h3>Renderings</h3></a></li>
-                                    <li><a href="about.html"><h3>About</h3></a></li>
-                                    <li><a href="contact.html"><h3>Contact</h3></a></li>
+									<li><a href="index.html"><h3>Projects</h3></a></li>
+									<li><a href="renderings.html"><h3>Renderings</h3></a></li>
+									<li><a href="about.html"><h3>About</h3></a></li>
+									<li><a href="contact.html"><h3>Contact</h3></a></li>
 								</ul>
 							</section>
 					</section>
 
 				<!-- Main -->
-				<div align="center">
-					<section id="content" class="container">
-						<div id="main" align="left">
-	
+						<div id="main" >
+							<!-- Post -->
+								<article class="post">
+										<header>
+											<div class="title">
+												<h2>Sibyl System (Psycho-Pass)</h2>
+												<!-- <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p> -->
+											</div>
+										</header>
+										<a href="#" class="image featured">
+												<iframe class="image featured" height="800" src="https://www.youtube.com/embed/CGRFWGOlVnU"></iframe>
+										</a>
+									</article>
+									<article class="post">
+											<header>
+												<div class="title">
+													<h2>Architectural rendering</h2>
+													<!-- <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p> -->
+												</div>
+											</header>
+											<div class="responsive">
+													<div class="gallery">
+															<a target="_blank" href="images/2014_art/post over 9000.jpg">
+																<img src="images/2014_art/post over 9000.jpg" alt="" width="400" />
+																</a>
+												</div>
+											</div>
+											<div class="responsive">
+													<div class="gallery">
+													  <a target="_blank" href="images/2014_art/PARKING.jpg">
+														<img src="images/2014_art/PARKING.jpg" alt="" width="400" />
+													  </a>
+													</div>
+												</div>
+											<div class="responsive">
+													<div class="gallery">
+															<a target="_blank" href="images/2014_art/ingresso.jpg">
+																<img src="images/2014_art/ingresso.jpg" alt="" width="400" />
+																</a>
+												</div>
+											</div>
+											<div class="responsive">
+													<div class="gallery">
+															<a target="_blank" href="images/2014_art/window clear EST frontale.jpg">
+																<img src="images/2014_art/window clear EST frontale.jpg" alt="" width="400" />
+																</a>
+												</div>
+											</div>
+											<p>
+												<br><br><br><br><br><br><br><br><br><br>
+											</p>
+									</article>							
 						</div>
-						</div>
-					</section>
-				</div>
-
-			</div>
-
-		<!-- Main -->
-		<div align="center">
-			<section id="content" class="container">
-				<div id="main" align="left">
-
-					<!-- Post -->
-						<article class="post">
-							<header>
-								<div class="title">
-									<h2>Sibyl System (Psycho-Pass)</h2>
-									<!-- <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p> -->
-								</div>
-							</header>
-							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-						</article>
-						<article class="post">
-								<header>
-									<div class="title">
-										<h2>Architectural rendering</h2>
-										<!-- <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p> -->
-									</div>
-								</header>
-								<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-						</article>
-				</div>
-				</div>
-			</section>
-		</div>
+				</div> <!-- wrapper end -->
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>

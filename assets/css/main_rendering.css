@@ -3376,6 +3376,19 @@ input, select, textarea {
 		width: 100%;
 	}
 
+	@media screen and (max-width: 600px) {
+		#main{
+			width: 100%;
+		}
+	}
+	
+	
+	@media screen and (min-width: 601px) {
+		#main{
+			width: 70%;
+		}
+	}
+
 /* Sidebar */
 
 	#sidebar {
@@ -3408,23 +3421,16 @@ input, select, textarea {
 			}
 
 		}
-
+		
 /* Intro */
 
-	#avatar {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		border-radius: 50%;
-		width: 10em;
-	}
 	#intro .logo {
 		border-bottom: 0;
 		display: inline-block;
 		margin: 0 0 1em 0;
 		overflow: hidden;
 		position: relative;
-		width: 18em;
+		width: 4em;
 	}
 
 		#intro .logo:before {
@@ -3444,7 +3450,7 @@ input, select, textarea {
 		#intro .logo img {
 			display: block;
 			margin-left: -0.25em;
-			width: 22.22em;
+			width: 4.5em;
 		}
 
 	#intro header h2 {
@@ -3618,12 +3624,66 @@ input, select, textarea {
 		}
 
 
+		#avatar {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			border-radius: 50%;
+			width: 10em;
+		}
 
 
-		.sidelink {
-			color: gray;
+		#main .thumb {
+			-moz-transition: opacity 1.25s ease-in-out;
+			-webkit-transition: opacity 1.25s ease-in-out;
+			-ms-transition: opacity 1.25s ease-in-out;
+			transition: opacity 1.25s ease-in-out;
+			pointer-events: auto;
+			-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+			opacity: 1;
+			overflow: hidden;
+			position: relative;
 		}
-		.sidelink:hover {
-			color: black;
-			font-weight: bolder;
-		}
+
+			#main .thumb:after {
+				background-image: -moz-linear-gradient(to top, rgba(10,17,25,0.35) 5%, rgba(10,17,25,0) 35%);
+				background-image: -webkit-linear-gradient(to top, rgba(10,17,25,0.35) 5%, rgba(10,17,25,0) 35%);
+				background-image: -ms-linear-gradient(to top, rgba(10,17,25,0.35) 5%, rgba(10,17,25,0) 35%);
+				background-image: linear-gradient(to top, rgba(10,17,25,0.35) 5%, rgba(10,17,25,0) 35%);
+				pointer-events: none;
+				background-size: cover;
+				content: '';
+				display: block;
+				height: 100%;
+				left: 0;
+				position: absolute;
+				top: 0;
+				width: 100%;
+			}
+
+			#main .thumb > .image {
+				-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
+				border: 0;
+				height: 100%;
+				left: 0;
+				position: absolute;
+				top: 0;
+				width: 100%;
+			}
+
+			#main .thumb > h2 {
+				pointer-events: none;
+				bottom: 1.875em;
+				font-size: 0.8em;
+				left: 2.1875em;
+				margin: 0;
+				position: absolute;
+				z-index: 1;
+			}
+
+			#main .thumb > p {
+				display: none;
+			}
