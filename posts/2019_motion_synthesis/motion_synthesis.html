@@ -66,26 +66,30 @@
 									<article class="post">
 										<header>
 											<div class="title">
-												<h2><a href="#">Character motion synthesis</a></h2>
+												<h2><a href="#">MSc dissertation - Character motion synthesis</a></h2>
 												<p>Using motion capture data to generate new animation</p>
 											</div>
 										</header>
-										<div style='position:relative; padding-bottom:calc(55.63% + 44px)'><iframe src='https://gfycat.com/ifr/GratefulGlisteningBackswimmer?autoplay=0&hd=1' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>
-										<p> <br>
-											I am developing a motion synthesis technique for creating realistic human animation in OpenGL. <br>
-											My current approach is based on motion graphs. 
-											A motion graph is a directed graph where each edge represent an animation (or clip), 
-											and each node is the connecting point to other similar animations. <br>
-											Transitions are created to blend similar portions of clips using linear interpolation, 
-											which can produce good results if the difference between the two motions is small. 
-										</p>
-										The motion capture data is provided by the <a href="http://mocap.cs.cmu.edu/">CMU Graphics Lab</a>, as a free to use mocap library.
+										<span class="image featured"><img src="" alt="" /></span>
+										<h3>Abstract</h3>
 										<p>
+											Creating realistic animations involving human motion is a complex task. Motion capture technology can be used to record motion from the real world, but generally, the results cannot be reused in different settings, which makes its adoption very expensive. 
+											This project presents an implementation of the motion graph technique. Motion graph is a graph-like data structure that can be used to synthesise motion from a motion capture database.
+											<br>
+											Motion is extracted as a graph path, where edges represent transitions between two animations, and vertices are original motion capture clips. A simple linear interpolation is used to transition from one motion to another, which means that the motions must be similar. The purpose of the motion graph is to find optimal transition points between multiple animations so that interpolation can be used to produce natural-looking motion.
+											Two graph traversal algorithms are proposed to extract motion. The first is a greedy algorithm that creates random graph walks, while the second looks for graph paths that can connect a list of vertices in a specific order. 
+											<br>
+											Experiments were conducted to determine the correctness of the motion blending method and to evaluate the ability of the graph traversal algorithms to produce valid animations.
+											The experimental results show that the implemented system can generate realistic-looking animations from the motion capture data.  
 										</p>
-										<span class="image featured"><img src="mocap_fight.png" alt="" /></span>
+										<div style='position:relative; padding-bottom:calc(55.63% + 44px);width: 70%;margin:auto;'><iframe src='https://gfycat.com/ifr/GratefulGlisteningBackswimmer?autoplay=0&hd=1' frameborder='0' scrolling='no' width='100%' height='75%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>
 										<p>
-											The project is still work-in-progress. <br>
-											However, you can check out the code repository <a href="https://github.com/SudoHead/motion-graphs" style="color: deepskyblue;">here</a>.
+											The motion capture data is provided by the <a href="http://mocap.cs.cmu.edu/">CMU Graphics Lab</a>, as a free to use mocap library.
+										</p>
+										<span class="image featured"><img src="" alt="" /></span>
+										<p>
+											If you want to learn more, you can read my <a href="msc_dissertation.pdf" style="color: deepskyblue;">full dissertation</a> 
+											or check out the <a href="https://github.com/SudoHead/motion-graphs" style="color: deepskyblue;">github repository</a>.
 										</p>
 										<!-- Footer -->
 											<footer>

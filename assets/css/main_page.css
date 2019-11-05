@@ -99,7 +99,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #f4f4f4;
+		background: #fafaf0;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -2758,7 +2758,7 @@ input, select, textarea {
 				-ms-flex-grow: 1;
 				flex-grow: 1;
 				-ms-flex: 1;
-				padding: 3.75em 3em 3.3em 3em;
+				padding: 1.2em 2.5em 1.5em 2.5em;
 			}
 
 				.post > header .title h2 {
@@ -3627,3 +3627,19 @@ input, select, textarea {
 			color: black;
 			font-weight: bolder;
 		}
+
+
+		.grid-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, 47%);
+		grid-gap: 1em;
+		/* background-color: #2196F3; */
+		/* padding: 1em; */
+		}
+
+		/* .grid-container > div {
+		background-color: rgba(255, 255, 255, 0.8);
+		text-align: center;
+		padding: 20px 0;
+		font-size: 30px;
+		} */
